@@ -1,0 +1,9 @@
+{
+  "name": "deck",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "reveal.js": "^4.4.0"
+  }
+}
