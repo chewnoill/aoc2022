@@ -73,23 +73,35 @@ create table day1.input (
 
 ```
 COPY table_name [ ( column_name [, ...] ) ]
-FROM { 'filename' | PROGRAM 'command' | STDIN }
-[ [ WITH ] ( option [, ...] ) ]
-[ WHERE condition ]
+FROM PROGRAM 'command'
+DELIMITER char
 ```
 
 ---
 
 ## Import data
+<div style="display:flex">
+<div style="flex:1">
 
-```sql
+```
+COPY table_name [ ( column_name [, ...] ) ]
+FROM PROGRAM 'command'
+DELIMITER char
+```
+</div>
+<div style="flex:1">
+
+```sql [1-5|1|2|3|4|5]
 copy day1.input (elf_id, amount)
 from PROGRAM 'awk ''
 BEGIN {RS = "\n\n"}
 {for (i = 1; i <= NF; i++) print NR,$i}
-'' /workspace/01/input.txt' DELIMITER ' ';
+'' /workspace/01/input.txt'
+DELIMITER ' ';
 ```
 
+</div>
+</div>
 
 ---
 
@@ -150,7 +162,7 @@ line | elf_id | amount
 
 who has the most?
 
-```sql
+```sql [8-10|1|2-6]
 with total_by_elf as (
     select elf_id,
         sum(amount) as total
@@ -223,18 +235,7 @@ Part 1 Solution:
 
 ```sql
 with tuples as (
-    select *,
-        value as a,
-        lead(value, 1) over(
-            order by sequence
-        ) as b,
-        lead(value, 2) over(
-            order by sequence
-        ) as c,
-        lead(value, 3) over(
-            order by sequence
-        ) as d
-    from day6.input
+  ...
 ),
 keys as (
     select sequence + 3 as column,
@@ -252,6 +253,43 @@ select *
 from keys
 limit 1;
 ```
+---
+<div style="display:flex">
+<div style="flex:1">
+
+```sql
+with tuples as (
+  select *,
+    value as a,
+    lead(value, 1) over(
+        order by sequence
+    ) as b,
+    lead(value, 2) over(
+        order by sequence
+    ) as c,
+    lead(value, 3) over(
+        order by sequence
+    ) as d
+  from day6.input
+)
+```
+
+</div>
+<div style="font-size: 25px;">
+
+| sequence | value | a | b | c | d |
+|----------|-------|---|---|---|---|
+|        1 | z     | z | c | f | z |
+|        2 | c     | c | f | z | f |
+|        3 | f     | f | z | f | w |
+|        4 | z     | z | f | w | z |
+|        5 | f     | f | w | z | z |
+|        6 | w     | w | z | z | q |
+|        7 | z     | z | z | q | f |
+
+</div>
+</div>
+
 
 ---
 
@@ -263,7 +301,7 @@ Find the longest unique sequence
 
 Part 2 Solution:
 
-```sql
+```sql [1-20|17-20|1|2-6|7|1,12-13|14-15|8-11|1-20]
 with RECURSIVE search_tree(sequence, value, key, depth) as (
     select sequence,
         value,
@@ -285,6 +323,13 @@ from search_tree
 order by depth desc
 limit 1;
 ```
+
+---
+
+Slides are available
+https://chewnoill.github.io/aoc2022/
+
+
 
           </script>
         </section>
