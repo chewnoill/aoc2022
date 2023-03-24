@@ -80,8 +80,8 @@ DELIMITER char
 ---
 
 ## Import data
-<div style="display:flex">
-<div style="flex:1">
+<div style="display:flex;font-size:24px">
+<div>
 
 ```
 COPY table_name [ ( column_name [, ...] ) ]
@@ -91,7 +91,7 @@ DELIMITER char
 </div>
 <div style="flex:1">
 
-```sql [1-5|1|2|3|4|5]
+```sql [1-5|1|2|3|4|5|6]
 copy day1.input (elf_id, amount)
 from PROGRAM 'awk ''
 BEGIN {RS = "\n\n"}
@@ -301,6 +301,8 @@ Find the longest unique sequence
 
 Part 2 Solution:
 
+<div style="font-size:24px;">
+
 ```sql [1-20|17-20|1|2-6|7|1,12-13|14-15|8-11|1-20]
 with RECURSIVE search_tree(sequence, value, key, depth) as (
     select sequence,
@@ -323,6 +325,8 @@ from search_tree
 order by depth desc
 limit 1;
 ```
+
+</div>
 
 ---
 
